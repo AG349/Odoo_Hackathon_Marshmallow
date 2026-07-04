@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ant-HRMS | Local Human Resource Management System</title>
+  
+  <!-- Premium Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <!-- CSS Styling -->
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+
+  <!-- ================= AUTH CONTAINER ================= -->
+  <div id="auth-container" class="auth-wrapper">
+    <div class="auth-card">
+      <div class="auth-brand-section">
+        <div class="brand-logo">
+          <svg viewBox="0 0 24 24" width="36" height="36" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="glow-svg"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+        </div>
+        <h2>Ant-HRMS</h2>
+        <p>Enterprise HR Management, Local-First</p>
+      </div>
+
+      <div class="auth-tabs">
+        <button id="tab-login-btn" class="auth-tab-btn active">Sign In</button>
+        <button id="tab-register-btn" class="auth-tab-btn">Register</button>
+      </div>
+
+      <!-- Login Form -->
+      <form id="login-form" class="auth-form active" novalidate>
+        <div class="input-group">
+          <label for="login-email">Email Address</label>
+          <input type="email" id="login-email" placeholder="name@hrms.local" required>
+          <span class="error-msg" id="login-email-error"></span>
+        </div>
+        <div class="input-group">
+          <label for="login-password">Password</label>
+          <input type="password" id="login-password" placeholder="••••••••" required>
+          <span class="error-msg" id="login-password-error"></span>
+        </div>
+        <button type="submit" class="btn-primary auth-submit-btn">
+          <span>Sign In</span>
+          <div class="spinner"></div>
+        </button>
+        <div class="auth-feedback" id="login-feedback"></div>
+      </form>
+
+      <!-- Register Form -->
+      <form id="register-form" class="auth-form" novalidate>
+        <div class="input-group">
+          <label for="reg-emp-id">Employee ID</label>
+          <input type="text" id="reg-emp-id" placeholder="EMP-XXX" required>
+          <span class="error-msg" id="reg-emp-id-error"></span>
+        </div>
+        <div class="input-group">
+          <label for="reg-email">Email Address</label>
+          <input type="email" id="reg-email" placeholder="name@hrms.local" required>
+          <span class="error-msg" id="reg-email-error"></span>
+        </div>
+        <div class="input-group">
+          <label for="reg-password">Password</label>
+          <input type="password" id="reg-password" placeholder="••••••••" required>
+          <span class="error-msg" id="reg-password-error"></span>
+          <!-- Realtime Password Strength Indicators -->
+          <div class="password-strength-checker">
+            <span class="strength-req" id="req-len">8+ chars</span>
+            <span class="strength-req" id="req-up">1 Uppercase</span>
+            <span class="strength-req" id="req-low">1 Lowercase</span>
+            <span class="strength-req" id="req-num">1 Number</span>
+            <span class="strength-req" id="req-spec">1 Special</span>
+          </div>
+        </div>
+        <div class="input-group">
+          <label for="reg-role">Role</label>
+          <select id="reg-role" required>
+            <option value="EMPLOYEE">Employee</option>
+            <option value="HR">HR Officer</option>
+          </select>
+          <span class="error-msg" id="reg-role-error"></span>
+        </div>
+        <button type="submit" class="btn-primary auth-submit-btn">
+          <span>Register</span>
+          <div class="spinner"></div>
+        </button>
+        <div class="auth-feedback" id="register-feedback"></div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ================= MAIN APP CONTAINER ================= -->
+  <div id="app-container" class="app-layout hidden">
+    <!-- Sidebar Navigation -->
+    <aside class="app-sidebar">
+      <div class="sidebar-header">
+        <svg viewBox="0 0 24 24" width="28" height="28" stroke="currentColor" stroke-width="2.5" fill="none" class="brand-svg"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+        <h1>Ant-HRMS</h1>
+      </div>
+
+      <div class="user-badge-card">
+        <div class="badge-avatar-container">
+          <img id="user-avatar" src="https://api.dicebear.com/7.x/bottts/svg?seed=default" alt="Avatar" class="badge-avatar">
+        </div>
+        <div class="badge-info">
+          <h4 id="user-name">Loading User...</h4>
+          <span id="user-role-badge" class="role-badge">Employee</span>
+        </div>
+      </div>
+
+      <nav class="sidebar-nav">
+        <button class="nav-item active" data-view="dashboard">
+          <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" stroke-width="2" fill="none"><rect x="3" y="3" width="7" height="9"></rect><rect x="14" y="3" width="7" height="5"></rect><rect x="14" y="12" width="7" height="9"></rect><rect x="3" y="16" width="7" height="5"></rect></svg>
+          <span>Dashboard</span>
+        </button>
+        <button class="nav-item" data-view="profile">
+          <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" stroke-width="2" fill="none"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+          <span>My Profile</span>
+        </button>
+        <button class="nav-item" data-view="attendance">
+          <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" stroke-width="2" fill="none"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+          <span>Attendance</span>
+        </button>
+        <button class="nav-item" data-view="leave">
+          <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" stroke-width="2" fill="none"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+          <span>Leave Request</span>
+        </button>
+        <button class="nav-item" data-view="payroll">
+          <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" stroke-width="2" fill="none"><line x1="12" y1="1" x2="12" y2="23"></line><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg>
+          <span>Payroll View</span>
+        </button>
+      </nav>
+
+      <button id="logout-btn" class="logout-btn">
+        <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" stroke-width="2" fill="none"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
+        <span>Logout</span>
+      </button>
+    </aside>
+
+    <!-- Main Workspace -->
+    <main class="app-workspace">
+      <!-- Topbar Header -->
+      <header class="workspace-header">
+        <h2 id="view-title">Dashboard</h2>
+        
+        <!-- Employee Switcher (Visible to HR only) -->
+        <div id="admin-switcher-container" class="admin-switcher-card hidden">
+          <label for="employee-switcher">Viewing Employee:</label>
+          <select id="employee-switcher">
+            <option value="self">Self (Logged-In User)</option>
+            <!-- Dynamically populated via JS -->
+          </select>
+        </div>
+      </header>
+
+      <!-- Dynamic Views Panels -->
+      <div class="view-content-wrapper">
+        
+        <!-- ================= VIEW 1: DASHBOARD ================= -->
+        <section id="view-dashboard" class="view-panel active">
+          <div class="dashboard-grid">
+            <!-- Clocking Widget -->
+            <div class="dashboard-card clocking-card">
+              <h3>Shift Tracking</h3>
+              <div class="time-clock-display">
+                <span id="live-time">00:00:00 PM</span>
+                <p id="live-date">Saturday, July 4, 2026</p>
+              </div>
+              <div id="stopwatch-display" class="stopwatch-container hidden">
+                <span class="pulse-indicator"></span>
+                <span id="stopwatch-time">00h 00m 00s</span>
+                <p>Time worked today</p>
+              </div>
+              <div class="clocking-buttons">
+                <button id="checkin-btn" class="btn-action success">Check In</button>
+                <button id="checkout-btn" class="btn-action danger" disabled>Check Out</button>
+              </div>
+              <div class="clock-status-tag" id="clocking-status">Not Checked In</div>
+            </div>
+
+            <!-- Stats Quick-Cards -->
+            <div class="dashboard-card stats-card">
+              <h3>Activity Overview</h3>
+              <div class="stats-grid">
+                <div class="stat-item">
+                  <span class="stat-num" id="stat-present">0</span>
+                  <span class="stat-label">Days Present (Month)</span>
+                </div>
+                <div class="stat-item">
+                  <span class="stat-num" id="stat-leave-days">0</span>
+                  <span class="stat-label">Leave Days Logged</span>
+                </div>
+                <div class="stat-item">
+                  <span class="stat-num" id="stat-pending-leaves">0</span>
+                  <span class="stat-label">Pending Requests</span>
+                </div>
+                <div class="stat-item">
+                  <span class="stat-num" id="stat-net-salary">$0.00</span>
+                  <span class="stat-label">Est. Take-Home Pay</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Recent activity logs -->
+            <div class="dashboard-card logs-card span-2">
+              <h3>System Updates & Activity Feed</h3>
+              <div class="activity-timeline" id="activity-timeline">
+                <div class="timeline-empty">No recent activity detected.</div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ================= VIEW 2: PROFILE ================= -->
+        <section id="view-profile" class="view-panel">
+          <div class="profile-layout">
+            <div class="profile-sidebar-card">
+              <div class="profile-pic-container">
+                <img id="profile-picture-display" src="https://api.dicebear.com/7.x/bottts/svg?seed=default" alt="Avatar" class="profile-pic">
+                <div class="avatar-selector-overlay" id="avatar-selector-btn">Change Avatar</div>
+              </div>
+              <h3 id="profile-full-name">Full Name</h3>
+              <p id="profile-title">Job Title</p>
+              <div class="tag" id="profile-dept">Department</div>
+              
+              <!-- Avatar Picker modal wrapper -->
+              <div id="avatar-picker-modal" class="modal hidden">
+                <div class="modal-content">
+                  <h4>Choose Avatar Seed</h4>
+                  <div class="avatar-seeds-grid">
+                    <img class="avatar-seed-opt" src="https://api.dicebear.com/7.x/bottts/svg?seed=Alex" data-seed="Alex">
+                    <img class="avatar-seed-opt" src="https://api.dicebear.com/7.x/bottts/svg?seed=Jack" data-seed="Jack">
+                    <img class="avatar-seed-opt" src="https://api.dicebear.com/7.x/bottts/svg?seed=Buster" data-seed="Buster">
+                    <img class="avatar-seed-opt" src="https://api.dicebear.com/7.x/bottts/svg?seed=Max" data-seed="Max">
+                    <img class="avatar-seed-opt" src="https://api.dicebear.com/7.x/bottts/svg?seed=Daisy" data-seed="Daisy">
+                    <img class="avatar-seed-opt" src="https://api.dicebear.com/7.x/bottts/svg?seed=Sparky" data-seed="Sparky">
+                  </div>
+                  <button id="close-avatar-modal" class="btn-action">Cancel</button>
+                </div>
+              </div>
+            </div>
+
+            <div class="profile-details-card">
+              <h3>Employee File Details</h3>
+              <form id="profile-edit-form">
+                <div class="form-row">
+                  <div class="input-group">
+                    <label for="prof-emp-id">Employee ID</label>
+                    <input type="text" id="prof-emp-id" disabled>
+                  </div>
+                  <div class="input-group">
+                    <label for="prof-email">Email Address</label>
+                    <input type="email" id="prof-email" disabled>
+                  </div>
+                </div>
+
+                <div class="form-row">
+                  <div class="input-group">
+                    <label for="prof-first-name">First Name</label>
+                    <input type="text" id="prof-first-name" disabled>
+                  </div>
+                  <div class="input-group">
+                    <label for="prof-last-name">Last Name</label>
+                    <input type="text" id="prof-last-name" disabled>
+                  </div>
+                </div>
+
+                <div class="form-row">
+                  <div class="input-group">
+                    <label for="prof-job">Job Title</label>
+                    <input type="text" id="prof-job" disabled>
+                  </div>
+                  <div class="input-group">
+                    <label for="prof-dept-input">Department</label>
+                    <input type="text" id="prof-dept-input" disabled>
+                  </div>
+                </div>
+
+                <div class="form-row">
+                  <div class="input-group">
+                    <label for="prof-phone">Phone Number</label>
+                    <input type="text" id="prof-phone" placeholder="+1 (555) 000-0000">
+                  </div>
+                  <div class="input-group">
+                    <label for="prof-address">Residential Address</label>
+                    <input type="text" id="prof-address" placeholder="123 Main St, City, Country">
+                  </div>
+                </div>
+
+                <div class="profile-admin-section hidden" id="profile-admin-fields">
+                  <h4 class="admin-divider">HR Administrative Override fields</h4>
+                  <div class="form-row">
+                    <div class="input-group">
+                      <label for="prof-admin-first">First Name (Override)</label>
+                      <input type="text" id="prof-admin-first">
+                    </div>
+                    <div class="input-group">
+                      <label for="prof-admin-last">Last Name (Override)</label>
+                      <input type="text" id="prof-admin-last">
+                    </div>
+                  </div>
+                  <div class="form-row">
+                    <div class="input-group">
+                      <label for="prof-admin-job">Job Title (Override)</label>
+                      <input type="text" id="prof-admin-job">
+                    </div>
+                    <div class="input-group">
+                      <label for="prof-admin-dept">Department (Override)</label>
+                      <input type="text" id="prof-admin-dept">
+                    </div>
+                  </div>
+                </div>
+
+                <button type="submit" class="btn-primary">Save Profile</button>
+                <div id="profile-form-feedback" class="form-feedback"></div>
+              </form>
+            </div>
+          </div>
+        </section>
+
+        <!-- ================= VIEW 3: ATTENDANCE ================= -->
+        <section id="view-attendance" class="view-panel">
+          <div class="attendance-layout">
+            <!-- Calendar Visualizer Card -->
+            <div class="attendance-card calendar-card">
+              <div class="calendar-header">
+                <button id="cal-prev-month" class="btn-cal-nav">&lt;</button>
+                <h3 id="calendar-month-title">July 2026</h3>
+                <button id="cal-next-month" class="btn-cal-nav">&gt;</button>
+              </div>
+              <div class="calendar-legend">
+                <div class="legend-item"><span class="dot present"></span> Present</div>
+                <div class="legend-item"><span class="dot half-day"></span> Half-Day</div>
+                <div class="legend-item"><span class="dot leave"></span> Leave</div>
+                <div class="legend-item"><span class="dot absent"></span> Absent</div>
+              </div>
+              <div class="calendar-grid" id="calendar-grid">
+                <!-- Dynamically Rendered via JS -->
+              </div>
+            </div>
+
+            <!-- Log Table -->
+            <div class="attendance-card logs-table-card">
+              <h3>Detailed Shift Logs</h3>
+              <div class="table-container">
+                <table class="data-table">
+                  <thead>
+                    <tr>
+                      <th>Date</th>
+                      <th>Check In</th>
+                      <th>Check Out</th>
+                      <th>Status</th>
+                    </tr>
+                  </thead>
+                  <tbody id="attendance-table-body">
+                    <tr>
+                      <td colspan="4" class="empty-row">No attendance records found for this period.</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ================= VIEW 4: LEAVE REQUEST ================= -->
+        <section id="view-leave" class="view-panel">
+          <div class="leave-layout">
+            <!-- Leave Request Form -->
+            <div class="leave-card leave-form-card">
+              <h3>Apply for Time-Off</h3>
+              <form id="leave-request-form">
+                <div class="input-group">
+                  <label for="leave-type">Leave Category</label>
+                  <select id="leave-type" required>
+                    <option value="PAID">Paid Leave</option>
+                    <option value="SICK">Sick Leave</option>
+                    <option value="UNPAID">Unpaid Leave</option>
+                  </select>
+                </div>
+                <div class="form-row">
+                  <div class="input-group">
+                    <label for="leave-start">Start Date</label>
+                    <input type="date" id="leave-start" required>
+                  </div>
+                  <div class="input-group">
+                    <label for="leave-end">End Date</label>
+                    <input type="date" id="leave-end" required>
+                  </div>
+                </div>
+                <div class="input-group">
+                  <label for="leave-remarks">Remarks / Reason</label>
+                  <textarea id="leave-remarks" placeholder="Provide details regarding your request..." rows="4"></textarea>
+                </div>
+                <button type="submit" class="btn-primary">Submit Application</button>
+                <div id="leave-form-feedback" class="form-feedback"></div>
+              </form>
+            </div>
+
+            <!-- Leave Request List (Admin approval or Employee tracking) -->
+            <div class="leave-card leave-history-card">
+              <h3 id="leave-history-title">My Leave History</h3>
+              <div class="leave-list" id="leave-list-container">
+                <div class="leave-empty">No leave requests found.</div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ================= VIEW 5: PAYROLL ================= -->
+        <section id="view-payroll" class="view-panel">
+          <div class="payroll-layout">
+            <!-- Compensation Breakdown Card -->
+            <div class="payroll-card breakdown-card">
+              <h3>Compensation Structure</h3>
+              <div class="payroll-salary-details">
+                <div class="pay-row">
+                  <span>Basic Salary</span>
+                  <strong id="pay-base-salary">$0.00</strong>
+                </div>
+                <div class="pay-row plus">
+                  <span>Allowances & Bonuses</span>
+                  <strong id="pay-allowances">+$0.00</strong>
+                </div>
+                <div class="pay-row minus">
+                  <span>Tax & Deductions</span>
+                  <strong id="pay-deductions">-$0.00</strong>
+                </div>
+                <div class="pay-divider"></div>
+                <div class="pay-row net">
+                  <span>Net Estimated Monthly Pay</span>
+                  <strong id="pay-net-salary">$0.00</strong>
+                </div>
+              </div>
+              <p class="read-only-notice">💡 Note: Standard salary details are updated directly by HR administrators.</p>
+            </div>
+
+            <!-- Admin Payroll control card (Visible to HR Only) -->
+            <div class="payroll-card admin-payroll-card hidden" id="payroll-admin-panel">
+              <h3>HR Compensation Override</h3>
+              <form id="payroll-admin-form">
+                <div class="input-group">
+                  <label for="pay-admin-base">Base Salary ($)</label>
+                  <input type="number" step="0.01" id="pay-admin-base" placeholder="6000.00" required>
+                </div>
+                <div class="input-group">
+                  <label for="pay-admin-allowances">Allowances ($)</label>
+                  <input type="number" step="0.01" id="pay-admin-allowances" placeholder="500.00" required>
+                </div>
+                <div class="input-group">
+                  <label for="pay-admin-deductions">Deductions ($)</label>
+                  <input type="number" step="0.01" id="pay-admin-deductions" placeholder="200.00" required>
+                </div>
+                <button type="submit" class="btn-primary">Update Compensation Schema</button>
+                <div id="payroll-form-feedback" class="form-feedback"></div>
+              </form>
+            </div>
+          </div>
+        </section>
+
+      </div>
+    </main>
+  </div>
+
+  <!-- JS Code logic -->
+  <script src="/js/app.js"></script>
+</body>
+</html>
