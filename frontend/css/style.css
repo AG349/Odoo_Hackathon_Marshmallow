@@ -4,8 +4,8 @@
   --font-body: 'Inter', sans-serif;
 
   /* Color Palette */
-  --bg-main: #0a0814;
-  --bg-surface: #121024;
+  --bg-main: #323232;
+  --bg-surface: #6ca297;
   --bg-glass: rgba(255, 255, 255, 0.03);
   --border-glass: rgba(255, 255, 255, 0.07);
   --border-glass-focus: rgba(0, 255, 204, 0.4);
@@ -73,26 +73,95 @@ body {
 
 /* ================= AUTHENTICATION VIEW ================= */
 .auth-wrapper {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 100vh;
-  padding: 20px;
-  position: relative;
-  z-index: 10;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    width: 100%;
+    position: relative;
+    overflow: hidden;
+
+    --mx: 0;
+    --my: 0;
+    --a-x: calc(var(--mx) * 8px);
+    --a-y: calc(var(--my) * 8px);
+    --b-x: calc(var(--mx) * -6px);
+    --b-y: calc(var(--my) * -6px);
+    --c-x: calc(var(--mx) * 4px);
+    --c-y: calc(var(--my) * 4px);
+
+    background:
+        repeating-linear-gradient(
+            45deg,
+            transparent calc(-650% / 13) calc(50% / 13),
+            #100f0f 0 calc(100% / 13),
+            transparent 0 calc(150% / 13),
+            #100f0f 0 calc(200% / 13),
+            transparent 0 calc(250% / 13),
+            #100f0f 0 calc(300% / 13)
+        )
+        calc(0px + var(--c-x)) calc(0px + var(--c-y)),
+
+        repeating-linear-gradient(
+            45deg,
+            transparent calc(-650% / 13) calc(50% / 13),
+            #100f0f 0 calc(100% / 13),
+            transparent 0 calc(150% / 13),
+            #100f0f 0 calc(200% / 13),
+            transparent 0 calc(250% / 13),
+            #100f0f 0 calc(300% / 13)
+        )
+        calc(32px + var(--a-x)) calc(32px + var(--a-y)),
+
+        repeating-linear-gradient(
+            -45deg,
+            transparent calc(-650% / 13) calc(50% / 13),
+            #100f0f 0 calc(100% / 13),
+            transparent 0 calc(150% / 13),
+            #100f0f 0 calc(200% / 13),
+            transparent 0 calc(250% / 13),
+            #100f0f 0 calc(300% / 13)
+        )
+        calc(0px + var(--b-x)) calc(0px + var(--b-y)),
+
+        repeating-linear-gradient(
+            -45deg,
+            transparent calc(-650% / 13) calc(50% / 13),
+            #100f0f 0 calc(100% / 13),
+            transparent 0 calc(150% / 13),
+            #100f0f 0 calc(200% / 13),
+            transparent 0 calc(250% / 13),
+            #100f0f 0 calc(300% / 13)
+        )
+        calc(32px + var(--a-x)) calc(32px + var(--a-y))
+        #1e1e1e;
+
+    background-size: 64px 64px;
 }
 
 .auth-card {
-  background: var(--bg-glass);
-  border: 1px solid var(--border-glass);
-  border-radius: var(--radius-lg);
-  backdrop-filter: blur(16px);
+    position:relative;
+    background:rgba(28,28,30,.82);
+    backdrop-filter:blur(18px);
+    border:1px solid rgba(255,255,255,.06);
   padding: 40px;
   width: 100%;
   max-width: 460px;
-  box-shadow: var(--shadow-card);
-  animation: fadeIn 0.5s ease-out;
+ border-radius: 30px;
+ background: #212121;
+ box-shadow: 15px 15px 30px rgb(60, 60, 60),
+             -15px -15px 30px rgb(60, 60, 60);
 }
+
+.auth-card::before{
+    content:"";
+    position:absolute;
+    inset:-35px;
+    z-index:-1;
+    border-radius:40px;
+    filter:blur(45px);
+}
+
 
 @keyframes fadeIn {
   from { opacity: 0; transform: translateY(15px); }
@@ -154,6 +223,7 @@ body {
   font-weight: 600;
   padding: 10px 0;
   cursor: pointer;
+  position: relative;
   border-radius: calc(var(--radius-md) - 2px);
   transition: var(--transition-smooth);
 }
@@ -256,42 +326,22 @@ body {
 
 /* Buttons */
 .btn-primary {
-  background: linear-gradient(135deg, var(--color-primary), var(--color-secondary));
-  border: none;
-  border-radius: var(--radius-md);
-  color: var(--bg-main);
-  font-family: var(--font-heading);
-  font-size: 15px;
-  font-weight: 700;
-  padding: 14px;
-  cursor: pointer;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  position: relative;
-  overflow: hidden;
-  transition: var(--transition-smooth);
+  font-size: 1rem;
+  width: 13em;
+  height: 4.2em;
+  color: #fafafa;
+  text-transform: uppercase;
+  padding: 10px 20px;
+  border-radius: 10px;
+  border: 2px solid #fafafa;
+  background: #252525;
+  box-shadow: 3px 3px #fafafa;
+  margin: 35px 0;
 }
 
-.btn-primary:hover {
-  transform: translateY(-2px);
-  box-shadow: var(--shadow-glow);
-  opacity: 0.95;
-}
-
-.btn-primary:active {
-  transform: translateY(0);
-}
-
-.btn-primary .spinner {
-  display: none;
-  width: 18px;
-  height: 18px;
-  border: 2px solid rgba(10, 8, 20, 0.2);
-  border-top-color: var(--bg-main);
-  border-radius: 50%;
-  animation: spin 0.8s linear infinite;
-  margin-left: 8px;
+button:active {
+  box-shadow: none;
+  transform: translate(3px, 3px);
 }
 
 @keyframes spin {
@@ -323,7 +373,7 @@ body {
 }
 
 .hidden {
-  display: none !important;
+  display: none;
 }
 
 /* Sidebar Navigation */
@@ -336,6 +386,11 @@ body {
   flex-direction: column;
   flex-shrink: 0;
   z-index: 100;
+  --color: rgba(114, 114, 114, 0.3);
+  background-color: #191a1a;
+  background-image: linear-gradient(0deg, transparent 24%, var(--color) 25%, var(--color) 26%, transparent 27%,transparent 74%, var(--color) 75%, var(--color) 76%, transparent 77%,transparent),
+      linear-gradient(90deg, transparent 24%, var(--color) 25%, var(--color) 26%, transparent 27%,transparent 74%, var(--color) 75%, var(--color) 76%, transparent 77%,transparent);
+  background-size: 55px 55px;
 }
 
 .sidebar-header {
@@ -816,17 +871,23 @@ body {
 
 .avatar-selector-overlay {
   position: absolute;
-  bottom: 0;
+  bottom: 10px;
   left: 0;
   width: 100%;
-  background: rgba(0, 0, 0, 0.7);
-  color: var(--color-primary);
+
   font-size: 10px;
   font-weight: 700;
-  text-transform: uppercase;
-  padding: 6px 0;
-  opacity: 0;
-  transition: var(--transition-smooth);
+  letter-spacing: 0.5px;
+
+  text-align: center;
+
+  color: var(--color-primary);
+
+  background: rgba(0, 0, 0, 0.6);
+  padding: 4px 0;
+  box-sizing: border-box;
+
+  opacity: 0;              
 }
 
 .profile-pic-container:hover .avatar-selector-overlay {
